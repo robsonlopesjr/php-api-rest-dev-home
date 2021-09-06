@@ -9,7 +9,7 @@ use Util\ConstantesGenericasUtil;
 
 class MySQL
 {
-  private object $db;
+  private $db;
 
   /**
    * MySQL constructor.
