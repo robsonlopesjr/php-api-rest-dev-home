@@ -30,6 +30,9 @@
 <p align="justify">
   Construção de uma API Rest com PHP nativa (sem utilizar framework).
 </p>
+<p align="justify">
+  👍 Projeto inspirado no vídeo do youtube => https://www.youtube.com/watch?v=TLmGDIJCKNA da DevHome.
+</p>
 
 ---
 
@@ -54,6 +57,7 @@ No terminal, clone o projeto:
 ```
 git clone https://github.com/robsonlopesjr/php-api-rest-dev-home
 ```
+Altere o arquivo bootstrap.php na pasta raíz, para configuração dos dados do seu ambiente.
 
 Em seguida inicie a api em PHP subindo o servidor local (localhost)
 
@@ -61,7 +65,23 @@ Em seguida inicie a api em PHP subindo o servidor local (localhost)
 
 ## 📌 Casos de uso
 
-👍 Projeto inspirado no vídeo do youtube => https://www.youtube.com/watch?v=TLmGDIJCKNA da DevHome.
+GET
+
+/usuarios/listar
+
+/usuarios/listar/{id}
+
+DELETE
+
+/usuarios/deletar/{id}
+
+POST
+
+/usuarios/cadastrar
+
+PUT
+
+/usuarios/atualizar/{id}
 
 ---
 
