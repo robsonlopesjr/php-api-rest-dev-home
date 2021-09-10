@@ -42,10 +42,13 @@ class UsuariosService
     if ($retorno === null) {
       throw new \InvalidArgumentException(ConstantesGenericasUtil::MSG_ERRO_GENERICO);
     }
+
+    return $retorno;
   }
 
   private function getOneByKey()
   {
+    return $this->UsuariosRepository->getMySQL()->getOneByKey(self::$TABELA, $this->dados['id']);
   }
 
   private function listar()

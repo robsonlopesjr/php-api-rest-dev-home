@@ -64,5 +64,7 @@ class RequestValidator
           break;
       }
     }
+
+    return $retorno;
   }
 }
