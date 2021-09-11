@@ -85,4 +85,23 @@ class RequestValidator
 
     return $retorno;
   }
+
+  private function post()
+  {
+    $retorno = utf8_encode(ConstantesGenericasUtil::MSG_ERRO_TIPO_ROTA);
+    if (in_array($this->request['rota'], ConstantesGenericasUtil::TIPO_POST, true)) {
+      switch ($this->request['rota']) {
+        case self::USUARIOS:
+          $UsuariosService = new UsuariosService($this->request);
+          $UsuariosService->setDadosCorpoRequest($this->dadosRequest);
+          $retorno = $UsuariosService->validarPost();
+          break;
+        default:
+          throw new \InvalidArgumentException(ConstantesGenericasUtil::MSG_ERRO_RECURSO_INEXISTENTE);
+          break;
+      }
+    }
+
+    return $retorno;
+  }
 }

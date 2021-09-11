@@ -11,7 +11,9 @@ class UsuariosService
   public static $TABELA = 'usuarios';
   public static $RECURSOS_GET = ['listar'];
   public static $RECURSOS_DELETE = ['deletar'];
+  public static $RECURSOS_POST = ['cadastrar'];
   private $dados;
+  private $dadosCorpoRequest = [];
 
   /**
    * @var object|UsuariosRepository
@@ -78,6 +80,32 @@ class UsuariosService
   /**
    * @return mixed
    */
+  public function validarPost()
+  {
+    $retorno = null;
+    $recurso = $this->dados['recurso'];
+
+    if (in_array($recurso, self::$RECURSOS_POST, true)) {
+      $retorno = $this->$recurso();
+    } else {
+      throw new \InvalidArgumentException(ConstantesGenericasUtil::MSG_ERRO_RECURSO_INEXISTENTE);
+    }
+
+    if ($retorno === null) {
+      throw new \InvalidArgumentException(ConstantesGenericasUtil::MSG_ERRO_GENERICO);
+    }
+
+    return $retorno;
+  }
+
+  public function setDadosCorpoRequest($dadosRequest)
+  {
+    $this->dadosCorpoRequest = $dadosRequest;
+  }
+
+  /**
+   * @return mixed
+   */
   private function getOneByKey()
   {
     return $this->UsuariosRepository->getMySQL()->getOneByKey(self::$TABELA, $this->dados['id']);
@@ -97,5 +125,24 @@ class UsuariosService
   private function deletar()
   {
     return $this->UsuariosRepository->getMySQL()->delete(self::$TABELA, $this->dados['id']);
+  }
+
+  private function cadastrar()
+  {
+    [$login, $senha] = [$this->dadosCorpoRequest['login'], $this->dadosCorpoRequest['senha']];
+
+    if ($login && $senha) {
+      if ($this->UsuariosRepository->insertUser($login, $senha) > 0) {
+        $idInserido = $this->UsuariosRepository->getMySQL()->getDb()->lastInsertId();
+        $this->UsuariosRepository->getMySQL()->getDb()->commit();
+        return ['id_inserido' => $idInserido];
+      }
+
+      $this->UsuariosRepository->getMySQL()->getDb()->rollBack();
+
+      throw new \InvalidArgumentException(ConstantesGenericasUtil::MSG_ERRO_GENERICO);
+    } else {
+      throw new \InvalidArgumentException(ConstantesGenericasUtil::MSG_ERRO_LOGIN_SENHA_OBRIGATORIO);
+    }
   }
 }
