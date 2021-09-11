@@ -12,6 +12,7 @@ class UsuariosService
   public static $RECURSOS_GET = ['listar'];
   public static $RECURSOS_DELETE = ['deletar'];
   public static $RECURSOS_POST = ['cadastrar'];
+  public static $RECURSOS_PUT = ['atualizar'];
   private $dados;
   private $dadosCorpoRequest = [];
 
@@ -98,6 +99,31 @@ class UsuariosService
     return $retorno;
   }
 
+  /**
+   * @return mixed
+   */
+  public function validarPut()
+  {
+    $retorno = null;
+    $recurso = $this->dados['recurso'];
+
+    if (in_array($recurso, self::$RECURSOS_PUT, true)) {
+      if ($this->dados['id'] > 0) {
+        $retorno = $this->$recurso();
+      } else {
+        throw new \InvalidArgumentException(ConstantesGenericasUtil::MSG_ERRO_ID_OBRIGATORIO);
+      }
+    } else {
+      throw new \InvalidArgumentException(ConstantesGenericasUtil::MSG_ERRO_RECURSO_INEXISTENTE);
+    }
+
+    if ($retorno === null) {
+      throw new \InvalidArgumentException(ConstantesGenericasUtil::MSG_ERRO_GENERICO);
+    }
+
+    return $retorno;
+  }
+
   public function setDadosCorpoRequest($dadosRequest)
   {
     $this->dadosCorpoRequest = $dadosRequest;
@@ -144,5 +170,17 @@ class UsuariosService
     } else {
       throw new \InvalidArgumentException(ConstantesGenericasUtil::MSG_ERRO_LOGIN_SENHA_OBRIGATORIO);
     }
+  }
+
+  private function atualizar()
+  {
+    if ($this->UsuariosRepository->updateUser($this->dados['id'], $this->dadosCorpoRequest) > 0) {
+      $this->UsuariosRepository->getMySQL()->getDb()->commit();
+      return ConstantesGenericasUtil::MSG_ATUALIZADO_SUCESSO;
+    }
+
+    $this->UsuariosRepository->getMySQL()->getDb()->rollBack();
+
+    throw new \InvalidArgumentException(ConstantesGenericasUtil::MSG_ERRO_NAO_AFETADO);
   }
 }
