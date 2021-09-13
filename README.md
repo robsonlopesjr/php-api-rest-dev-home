@@ -2,7 +2,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/static/v1?label=php&message=language&color=blue&style=for-the-badge&logo=PHP"/>
-   <img src="http://img.shields.io/static/v1?label=STATUS&message=Contrução&color=red&style=for-the-badge"/>
+   <img src="http://img.shields.io/static/v1?label=STATUS&message=Concluido&color=green&style=for-the-badge"/>
 </p>
 
 ---

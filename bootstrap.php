@@ -29,8 +29,8 @@ define("CONF_URL_BASEAPI", CONF_URL_BASE . CONF_URL_PROJETO);
 
 
 if (file_exists('autoload.php')) {
-  include 'autoload.php';
+    include 'autoload.php';
 } else {
-  echo "Erro ao incluir o boostrap";
-  exit;
+    echo "Erro ao incluir o boostrap";
+    exit;
 }
